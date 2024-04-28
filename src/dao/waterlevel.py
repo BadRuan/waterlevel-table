@@ -5,8 +5,6 @@ from model.waterlevel import WaterLevel
 from util.tdengine import TDengineTool
 
 
-formatStr = "%Y-%m-%d %H:%M:00"  # 时间示例: 2024-01-04 12:00:0
-
 async def select_waterlevel(sql: str) -> List[WaterLevel]:
     with TDengineTool() as td:
         result = td.query(sql)
