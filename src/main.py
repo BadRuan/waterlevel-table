@@ -9,7 +9,7 @@ async def main():
     with open(filename, "w", encoding="utf-8") as file:
         csv_write = csv.writer(file)
         for station in results:
-            csv_write.writerow((station.name, station.current))
+            csv_write.writerow((station.current,))
 
 
 if __name__ == "__main__":
