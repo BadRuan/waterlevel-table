@@ -1,15 +1,33 @@
 import asyncio
-from dao.waterlevel import select_threeline_waterlevel
+from dao.waterlevel import (
+    today8_waterlevel,
+    yesterday8_waterlevel,
+    lastweek8_waterlevel,
+)
+from config.settings import STATIONS
 import csv
 
 
 async def main():
-    results = await select_threeline_waterlevel()
+    today8 = await today8_waterlevel()
+    yesterday8 = await yesterday8_waterlevel()
+    lastweek8 = await lastweek8_waterlevel()
+    for station in STATIONS:
+        for today in today8:
+            if station.stcd == today.stcd:
+                station.today_8 = today.current
+        for yesterday in yesterday8:
+            if station.stcd == yesterday.stcd:
+                station.yesterday_8 = yesterday.current
+        for lastweek in lastweek8:
+            if station.stcd == lastweek.stcd:
+                station.lastweek_8 = lastweek.current
+
     filename = "目标水位.csv"
     with open(filename, "w", encoding="utf-8") as file:
         csv_write = csv.writer(file)
-        for station in results:
-            csv_write.writerow((station.current,))
+        for station in STATIONS:
+            csv_write.writerow((station.today_8, station.yesterday_8, station.lastweek_8))
 
 
 if __name__ == "__main__":

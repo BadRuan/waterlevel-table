@@ -1,6 +1,7 @@
 venv/
 dist/
 node_modules/
+cache/
 .vscode
 .idea
 .DS_Store
@@ -8,4 +9,4 @@ node_modules/
 __pycache__
 ENV
 *.log
-cache/
+.csv

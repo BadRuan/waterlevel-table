@@ -1,14 +1,15 @@
 from typing import List
 from config.settings import STATIONS
-from model.waterlevel import WaterLevel, Station
+from datetime import datetime, timedelta
+from model.waterlevel import WaterLevel
 from util.tdengine import TDengineTool
 
 
-# 查询当前最新水位
-async def select_cruuent_waterlevel() -> List[WaterLevel]:
+formatStr = "%Y-%m-%d %H:%M:00"  # 时间示例: 2024-01-04 12:00:0
+
+async def select_waterlevel(sql: str) -> List[WaterLevel]:
     with TDengineTool() as td:
-        SQL = "SELECT LAST_ROW(ts) as tm, `current`, `stcd`, `name` FROM waterlevel GROUP BY `stcd`"
-        result = td.query(SQL)
+        result = td.query(sql)
         return [
             WaterLevel(
                 tm=row[0][:-7],
@@ -19,13 +20,20 @@ async def select_cruuent_waterlevel() -> List[WaterLevel]:
             for row in result
         ]
 
+# 查询今天8点水位
+async def today8_waterlevel() -> List[WaterLevel]:
+    date_now = datetime.now()
+    SQL = f"SELECT `ts`, `current`, `stcd`, `name` FROM waterlevel WHERE `ts`='{date_now.strftime("%Y-%m-%d")} 08:00:00'"
+    return await select_waterlevel(SQL)
 
-# 查询当前三线水位信息
-async def select_threeline_waterlevel() -> List[Station]:
-    cruuent_waterlevel_data = await select_cruuent_waterlevel()
-    for station in STATIONS:
-        for waterlevel in cruuent_waterlevel_data:
-            if station.stcd == waterlevel.stcd:
-                station.current = waterlevel.current
-                station.station_name = waterlevel.name
-    return STATIONS
+# 查询昨天8点水位
+async def yesterday8_waterlevel() -> List[WaterLevel]:
+    yesterday = datetime.now() - timedelta(days=1)
+    SQL = f"SELECT `ts`, `current`, `stcd`, `name` FROM waterlevel WHERE `ts`='{yesterday.strftime("%Y-%m-%d")} 08:00:00'"
+    return await select_waterlevel(SQL)
+
+# 查询上周8点水位
+async def lastweek8_waterlevel() -> List[WaterLevel]:
+    one_week_ago = datetime.now() - timedelta(weeks=1)
+    SQL = f"SELECT `ts`, `current`, `stcd`, `name` FROM waterlevel WHERE `ts`='{one_week_ago.strftime("%Y-%m-%d")} 08:00:00'"
+    return await select_waterlevel(SQL)
