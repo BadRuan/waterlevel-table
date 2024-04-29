@@ -4,7 +4,6 @@ from dao.waterlevel import (
     yesterday8_waterlevel,
     lastweek8_waterlevel,
 )
-
 from config.settings import STATIONS
 import csv
 

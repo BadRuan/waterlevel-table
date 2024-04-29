@@ -9,4 +9,4 @@ cache/
 __pycache__
 ENV
 *.log
-.csv
+*.csv
