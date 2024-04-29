@@ -4,7 +4,7 @@ from model.waterlevel import Station
 
 
 DATABASE_DEV = Database(
-    url="122.51.22.111", port=6041, user="root", password="123456", database="water"
+    url="192.168.10.138", port=6041, user="root", password="123456", database="water"
 )
 
 

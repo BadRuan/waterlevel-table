@@ -14,4 +14,5 @@ class Station(BaseModel):
     stcd: int
     name: str
     today_8: Optional[float] = 0
+    yesterday_8: Optional[float] = 0
     lastweek_8: Optional[float] = 0
