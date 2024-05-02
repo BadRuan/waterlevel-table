@@ -2,11 +2,11 @@ venv/
 dist/
 node_modules/
 cache/
+build/
 .vscode
 .idea
 .DS_Store
-.csv
+*.csv
 __pycache__
 ENV
 *.log
-*.csv
