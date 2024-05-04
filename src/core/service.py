@@ -1,5 +1,7 @@
 from typing import List
-from csv import writer
+from datetime import datetime
+from openpyxl import load_workbook
+from core.settings import STATIONS
 from core.model import Station
 from core.dao import (
     today8_waterlevel,
@@ -10,12 +12,12 @@ from core.dao import (
 
 
 # 获取目标水位
-async def get_waterlevel(stations: List[Station]) -> List[Station]:
+async def get_waterlevel() -> List[Station]:
     today8 = await today8_waterlevel()
     yesterday_8 = await yesterday8_waterlevel()
     lastweek8 = await lastweek8_waterlevel()
     lastyear8 = await lastyear8_waterlevel()
-    for station in stations:
+    for station in STATIONS:
         # 获取今天 8:00 水位
         for today in today8:
             if station.stcd == today.stcd:
@@ -32,19 +34,24 @@ async def get_waterlevel(stations: List[Station]) -> List[Station]:
         for lastyear in lastyear8:
             if station.stcd == lastyear.stcd:
                 station.lastyear_8 = lastyear.current
-    return stations
+    return STATIONS
 
 
-# 保存为csv文件
-def save_csv(file_name: str, stations: List[Station]):
-    with open(file_name, "w", encoding="utf-8") as file:
-        csv_write = writer(file)
-        for station in stations:
-            csv_write.writerow(
-                (
-                    station.today_8,
-                    station.yesterday_8,
-                    station.lastweek_8,
-                    station.lastyear_8,
-                )
-            )
+# 保存为xlsx文件
+async def save_xlsx(source_file: str, target_file: str, stations: List[Station]):
+    wb = load_workbook(source_file)
+    ws = wb.active
+    ws["A2"] = "填报日期： " + datetime.now().strftime("%Y年%m月%d日")
+    for row, station in zip(ws["D5:D14"], stations):
+        for cell in row:
+            cell.value = station.today_8
+    for row, station in zip(ws["E5:E14"], stations):
+        for cell in row:
+            cell.value = station.yesterday_8
+    for row, station in zip(ws["F5:F14"], stations):
+        for cell in row:
+            cell.value = station.lastweek_8
+    for row, station in zip(ws["G5:G14"], stations):
+        for cell in row:
+            cell.value = station.lastyear_8
+    wb.save(target_file)
