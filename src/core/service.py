@@ -1,5 +1,5 @@
 from typing import List
-import csv
+from csv import writer
 from core.model import Station
 from core.dao import (
     today8_waterlevel,
@@ -38,7 +38,7 @@ async def get_waterlevel(stations: List[Station]) -> List[Station]:
 # 保存为csv文件
 def save_csv(file_name: str, stations: List[Station]):
     with open(file_name, "w", encoding="utf-8") as file:
-        csv_write = csv.writer(file)
+        csv_write = writer(file)
         for station in stations:
             csv_write.writerow(
                 (

@@ -1,4 +1,4 @@
-import taosws
+from taosws import connect
 from core.settings import DATABASE_DEV
 
 
@@ -11,7 +11,7 @@ class TDengineTool:
         try:
             c = DATABASE_DEV
             dsn = f"taosws://{c.user}:{c.password}@{c.url}:{c.port}"
-            self.conn = taosws.connect(dsn)
+            self.conn = connect(dsn)
             self.conn.execute(f"USE {c.database}")
             self.initialized = True
         except BaseException as other:

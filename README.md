@@ -16,5 +16,5 @@
 ## 程序打包
 打包命令:
 ```shell
-pyinstaller -F src/main.py
+pyinstaller -n 水位小助手 -D src/main.py
 ```

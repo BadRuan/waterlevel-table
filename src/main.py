@@ -1,4 +1,5 @@
-import asyncio
+from pathlib import Path
+from asyncio import run
 from datetime import datetime
 from core.service import get_waterlevel, save_csv
 from core.settings import STATIONS
@@ -12,11 +13,14 @@ async def main():
 
 
 async def main2():
-    wb = load_workbook("基础表格.xlsx")
+    current_file_path = Path(__file__).resolve()
+    current_dir = current_file_path.parent
+    file_path = current_dir / "基础表格.xlsx"
+    filename = str(file_path)
+    print("读取路径: ", filename)
+    wb = load_workbook(filename)
     stations = await get_waterlevel(STATIONS)
-    file_name: str = datetime.now().strftime(
-        "%Y年%m月%d日_鸠江区三线水位测站记录表"
-    )
+    file_name: str = datetime.now().strftime("%Y年%m月%d日_鸠江区三线水位测站记录表")
     ws = wb.active
     ws["A2"] = "填报日期： " + datetime.now().strftime("%Y年%m月%d日")
     for row, station in zip(ws["D5:D14"], stations):
@@ -31,8 +35,12 @@ async def main2():
     for row, station in zip(ws["G5:G14"], stations):
         for cell in row:
             cell.value = station.lastyear_8
-    wb.save(f"{file_name}.xlsx")
+    savefilename = f"{file_name}.xlsx"
+    save_path = current_dir.parent / savefilename
+    filename = str(save_path)
+    print("保存路径: ", filename)
+    wb.save(filename)
 
 
 if __name__ == "__main__":
-    asyncio.run(main2())
+    run(main2())
