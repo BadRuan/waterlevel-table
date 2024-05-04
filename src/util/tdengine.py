@@ -24,6 +24,7 @@ class TDengineTool:
 
     def __exit__(self, exc_type, exc_value, exc_tb):
         if self.conn is not None:
+            self.init_connect = False
             self.conn.close()
 
     def __enter__(self):
