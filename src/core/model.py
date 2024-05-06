@@ -22,6 +22,9 @@ class WaterLevel(BaseModel):
 class Station(BaseModel):
     stcd: int
     name: str
+    sfsw: float
+    jjsw: float
+    bzsw: float
     today_8: Optional[float] = 0
     yesterday_8: Optional[float] = 0
     lastweek_8: Optional[float] = 0
