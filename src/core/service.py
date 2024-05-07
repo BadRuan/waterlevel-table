@@ -47,10 +47,10 @@ async def save_xlsx(source_file: str, target_file: str, stations: List[Station])
         for cell in row:
             cell.value = station.today_8
             # 达到设防水位 浅蓝色
-            if station.today_8 >= station.sfsw:
+            if station.today_8 >= station.sfsw and station.today_8 <station.jjsw:
                 cell.font = Font(color='189FA7')
             # 达到警戒水位 深蓝色
-            elif station.today_8 >= station.jjsw:
+            elif station.today_8 >= station.jjsw and station.today_8 < station.bzsw:
                 cell.font = Font(color='0070C0')
             # 达到保证水位 红色
             elif station.today_8 >= station.bzsw:
@@ -58,27 +58,27 @@ async def save_xlsx(source_file: str, target_file: str, stations: List[Station])
     for row, station in zip(ws["E5:E14"], stations):
         for cell in row:
             cell.value = station.yesterday_8
-            if station.yesterday_8 >= station.sfsw:
+            if station.yesterday_8 >= station.sfsw and station.yesterday_8 < station.jjsw:
                 cell.font = Font(color='189FA7')
-            elif station.yesterday_8 >= station.jjsw:
+            elif station.yesterday_8 >= station.jjsw and station.yesterday_8 < station.bzsw:
                 cell.font = Font(color='0070C0')
             elif station.yesterday_8 >= station.bzsw:
                 cell.font = Font(color='C00400')
     for row, station in zip(ws["F5:F14"], stations):
         for cell in row:
             cell.value = station.lastweek_8
-            if station.lastweek_8 >= station.sfsw:
+            if station.lastweek_8 >= station.sfsw and station.lastweek_8 < station.jjsw:
                 cell.font = Font(color='189FA7')
-            elif station.lastweek_8 >= station.jjsw:
+            elif station.lastweek_8 >= station.jjsw and station.lastweek_8 < station.bzsw:
                 cell.font = Font(color='0070C0')
             elif station.lastweek_8 >= station.bzsw:
                 cell.font = Font(color='C00400')
     for row, station in zip(ws["G5:G14"], stations):
         for cell in row:
             cell.value = station.lastyear_8
-            if station.lastyear_8 >= station.sfsw:
+            if station.lastyear_8 >= station.sfsw and station.lastyear_8 < station.jjsw:
                 cell.font = Font(color='189FA7')
-            elif station.lastyear_8 >= station.jjsw:
+            elif station.lastyear_8 >= station.jjsw and station.lastyear_8 < station.bzsw:
                 cell.font = Font(color='0070C0')
             elif station.lastyear_8 >= station.bzsw:
                 cell.font = Font(color='C00400')
