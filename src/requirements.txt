@@ -1,0 +1,14 @@
+-i https://repo.huaweicloud.com/repository/pypi/simple
+altgraph==0.17.4
+annotated-types==0.6.0; python_version >= '3.8'
+et-xmlfile==1.1.0; python_version >= '3.6'
+macholib==1.16.3
+openpyxl==3.1.2; python_version >= '3.6'
+packaging==24.0; python_version >= '3.7'
+pydantic==2.7.1; python_version >= '3.8'
+pydantic-core==2.18.2; python_version >= '3.8'
+pyinstaller==6.6.0; python_version < '3.13' and python_version >= '3.8'
+pyinstaller-hooks-contrib==2024.5; python_version >= '3.7'
+setuptools==70.0.0; python_version >= '3.8'
+taos-ws-py==0.3.2
+typing-extensions==4.11.0; python_version >= '3.8'
